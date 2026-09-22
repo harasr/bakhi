@@ -1,0 +1,6 @@
+{
+  "name": "Nintendo CRT Background",
+  "description": "An 8-bit console title screen with a secure Cloud SQL leaderboard and Google Auth.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,66 @@
+{
+  "entities": {
+    "user": {
+      "title": "User Profile",
+      "description": "Public profile for game users",
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "description": "User's display name from Google"
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "User's avatar URL from Google"
+        },
+        "highScore": {
+          "type": "number",
+          "description": "User's all-time high score"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "Encrypted phone number"
+        },
+        "idCardNumber": {
+          "type": "string",
+          "description": "Encrypted ID Card number"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["displayName", "highScore"]
+    },
+    "score": {
+      "title": "Game Score",
+      "description": "A single game session score",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Reference to the user who earned this score"
+        },
+        "value": {
+          "type": "number",
+          "description": "The score value"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userId", "value", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "user",
+      "description": "User profiles and high scores"
+    },
+    "/scores/{scoreId}": {
+      "schema": "score",
+      "description": "History of game scores"
+    }
+  }
+}
