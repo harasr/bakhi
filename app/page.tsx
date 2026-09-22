@@ -16,6 +16,25 @@ export default function Home() {
   const { user, loading } = useAuth();
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [signingIn, setSigningIn] = useState(false);
+
+  const handleLogin = async () => {
+    if (signingIn) return;
+    setSigningIn(true);
+    try {
+      await signInWithGoogle();
+    } catch (err: any) {
+      if (err.code === "auth/cancelled-popup-request") {
+        console.warn("Sign-in popup already open or cancelled by another request.");
+      } else if (err.code === "auth/popup-closed-by-user") {
+        console.warn("Sign-in popup closed by user.");
+      } else {
+        console.error("Sign-in failed:", err);
+      }
+    } finally {
+      setSigningIn(false);
+    }
+  };
 
   const handleGameOver = async (score: number) => {
     if (!user) return;
@@ -121,11 +140,12 @@ export default function Home() {
             </div>
           ) : (
             <button 
-              onClick={signInWithGoogle}
-              className="flex items-center gap-2 bg-white text-black p-2 px-4 rounded-full font-bold hover:bg-white/90 transition-all transform hover:scale-105 active:scale-95 shadow-lg"
+              onClick={handleLogin}
+              disabled={signingIn}
+              className={`flex items-center gap-2 bg-white text-black p-2 px-4 rounded-full font-bold transition-all transform shadow-lg ${signingIn ? 'opacity-50 cursor-not-allowed' : 'hover:bg-white/90 hover:scale-105 active:scale-95'}`}
             >
               <LogIn size={18} />
-              <span>Login with Google</span>
+              <span>{signingIn ? "Signing in..." : "Login with Google"}</span>
             </button>
           )
         )}
